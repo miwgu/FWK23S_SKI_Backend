@@ -2,22 +2,44 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
+const secretKey = process.env.SECRET_KEY;
+console.log('SecretKey:', secretKey);
 
-router.get('/data', (req, res) => {
+// Funktion för att extrahera token från förfrågningshuvudet
+function extractToken(req) {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  return authHeader && authHeader.split(' ')[1];
+}
 
-  if (!token) return res.status(401).send('Access Denied');
+// Funktion för att verifiera och dekodera token
+function verifyAndDecodeToken(token) {
+  return jwt.verify(token, secretKey);
+}
+
+// Route-hanterare
+router.get('/', (req, res) => {
+  const token = extractToken(req);
+  console.log('Token:', token);
+
+  if (!token) {
+    return res.status(401).send('Access Denied: No token provided');
+  }
 
   try {
-    const verified = jwt.verify(token, 'secretKey');
-    if (verified.role === 'admin') {
-      res.json({ data: 'Secret data for admin!' });
+    const decoded_verified = verifyAndDecodeToken(token);
+    console.log('Decoded JWT Payload:', decoded_verified);
+    console.log('User Role:', decoded_verified.role);
+
+    if (decoded_verified.role === 'admin') {
+      console.log('Admin access granted');
+      res.status(200).json({ data: 'Secret data for admin!' });
     } else {
-      res.json({ data: 'Secret data for user!' });
+      console.log(`${decoded_verified.role} access denied, you are not admin`);
+      res.status(200).json({ message: 'Logged in successfully, but denied data access' });
     }
-  } catch {
-    res.status(401).send('Invalid Token');
+  } catch (error) {
+    console.log(`Token Error: ${error.message}`);
+    res.status(401).send(`Invalid Token: ${error.message}`);
   }
 });
 
