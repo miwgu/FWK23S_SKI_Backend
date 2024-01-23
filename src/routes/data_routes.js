@@ -39,7 +39,7 @@ router.get('/', (req, res) => {
 // Om det är en användare som försöker komma åt data skickas ett felmeddelande tillbaka
     } else {
       console.log(`${decoded_verified.role} access denied, you are not admin`);
-      res.status(200).json({ message: 'Logged in successfully, but denied data access' });
+      res.status(403).send("You are not an Admin! Access denied.");
     }
   } catch (error) {
     console.log(`Token Error: ${error.message}`);
