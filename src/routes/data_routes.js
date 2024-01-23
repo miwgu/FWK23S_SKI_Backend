@@ -35,6 +35,8 @@ router.get('/', (req, res) => {
     if (decoded_verified.role === 'admin') {
       console.log('Admin access granted');
       res.status(200).json({ data: 'Secret data for admin!' });
+
+// Om det är en användare som försöker komma åt data skickas ett felmeddelande tillbaka
     } else {
       console.log(`${decoded_verified.role} access denied, you are not admin`);
       res.status(200).json({ message: 'Logged in successfully, but denied data access' });
