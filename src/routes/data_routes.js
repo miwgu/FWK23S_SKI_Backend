@@ -12,10 +12,12 @@ function extractToken(req) {
   //Hämtar värdet för Authorization header från HTTP-request.
   const authHeader = req.headers['authorization']; //'Bearer JWTtoken'
  
+  //Operatorn && i JavaScript är känd som den "logiska AND"-operatorn. 
+  //Den kortsluter: om den vänstra operanden är falsy returneras den vänstra operanden, annars returneras den högra operanden.
   //Utan 'authHeader &&' kan det leda till ett fel om authHeader är null, undefined eller en tom sträng. 
   //Eftersom Split-operationen kräver en giltig STRING-ingång, och försök att dela null, undefined eller en tom sträng kommer att resultera i en runtime error.
- //Om authHeader är falsy (null, undefined eller en tom sträng) kommer token att tilldelas värdet för authHeader.
- //Om authHeader är en icke-tom sträng (truthy) kommer token att tilldelas den extraherade token från authHeader.
+  //Om authHeader är falsy (null, undefined eller en tom sträng) kommer token att tilldelas värdet för authHeader.
+  //Om authHeader är en icke-tom sträng (truthy) kommer token att tilldelas den extraherade token från authHeader.
   return authHeader && authHeader.split(' ')[1];
 }
 
