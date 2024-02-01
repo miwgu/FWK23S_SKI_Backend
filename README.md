@@ -16,8 +16,8 @@ Skicka respons 200 om rollen är admin. Skicka respons 403 om rollen är user
 1. Frontend skickar credential (e-mail, lösenord) till Auth 
 2. Auth kollar på inlogning uppgifter i users.json.Loggin Lyckas.
 3. Auth utfäder JWT med SECRET_KEY och skicka de till Frontend
-4. Frontend spara JWT i LocalStrage.
-5. Skicka request med JWT i header till Backend -> headers: { Authorization: `Bearer ${token}` }
+4. Frontend sparar JWT i LocalStrage.
+5. Frontend Skickar request med JWT i header till Backend -> headers: { Authorization: `Bearer ${token}` }
 6. Backend verify JWT och
 7. Backend kollar på rollen, admin eller user i payload
 8. Backend skickar respons till Frontend 
